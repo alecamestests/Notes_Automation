@@ -1,0 +1,83 @@
+/* Reset some default styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #333;
+    padding: 1rem 2rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.desktop-menu {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.desktop-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s;
+}
+
+.desktop-menu a:hover {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.hamburger div {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+}
+
+.mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: #333;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+}
+
+.mobile-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #444;
+}
+
+.mobile-menu a:hover {
+    background-color: #555;
+}
+
+@media (max-width: 768px) {
+    .desktop-menu {
+        display: none;
+    }
+    
+    .hamburger {
+        display: flex;
+    }
+    
+    .mobile-menu.active {
+        display: flex;
+    }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- Desktop Menu -->
+            <div class="desktop-menu">
+                <a href="#">Home</a>
+                <a href="#">Notes</a>
+                <a href="#">Escalations</a>
+                <a href="#">Tests</a>
+            </div>
+
+            <!-- Hamburger Button -->
+            <div class="hamburger" id="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#">Home</a>
+                <a href="#">Notes</a>
+                <a href="#">Escalations</a>
+                <a href="#">Tests</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Welcome to My Website</h1>
+        <p>This is the main content area.</p>
+    </main>
+
+    <script>
+        // Toggle mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
