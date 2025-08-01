@@ -3,225 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escalation Notes Template</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .template-selector {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: #f5f5f5;
-            border-radius: 8px;
-        }
-
-        .form-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin: 0.8rem 0;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 0.3rem;
-        }
-
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 0.5rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: Arial, sans-serif;
-        }
-
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-
-        .section-title {
-            font-size: 1.4rem;
-            margin-top: 1.5rem;
-            padding-bottom: 0.3rem;
-            border-bottom: 2px solid #333;
-        }
-
-        .print-button {
-            margin: 2rem 0;
-            text-align: right;
-        }
-
-        @media print {
-            .template-selector, .print-button {
-                display: none;
-            }
-            body {
-                max-width: 100%;
-                padding: 0;
-            }
-        }
-    </style>
+    <title>Escalation Notes - Split View</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="template-selector">
-        <label for="templateSelect">Select Template:</label>
-        <select id="templateSelect" onchange="switchTemplate()">
-            <option value="installer">Installer Support</option>
-            <option value="rma">Installer Support RMA INFO</option>
-        </select>
-    </div>
+    <div class="container">
+        <!-- Left Side - Form Editor -->
+        <div class="form-editor">
+            <div class="template-selector">
+                <label for="templateSelect">Select Template:</label>
+                <select id="templateSelect">
+                    <option value="installer">Installer Support</option>
+                    <option value="rma">Installer Support RMA INFO</option>
+                </select>
+                <button onclick="addForm()">Add Form</button>
+            </div>
 
-    <!-- First Template -->
-    <div id="installerTemplate">
-        <div class="section-title">### Installer Support ###</div>
-        
-        <div class="form-section">
-            <div class="form-group">
-                <label>Contact with:</label>
-                <input type="text" placeholder="N/A">
-            </div>
-            <div class="form-group">
-                <label>Company:</label>
-                <input type="text" placeholder="N/A">
-            </div>
-            <div class="form-group">
-                <label>Phone number:</label>
-                <input type="text" placeholder="N/A">
-            </div>
-            <div class="form-group">
-                <label>Email:</label>
-                <input type="text" placeholder="N/A">
+            <div id="formContainer">
+                <!-- Initial Form -->
+                <div class="form-wrapper">
+                    <div class="form-content">
+                        <div class="form-header">
+                            <span class="form-title">Installer Support</span>
+                            <button class="remove-form" onclick="removeForm(this)">Remove</button>
+                        </div>
+                        <div class="form-fields" data-template="installer">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Contact with:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone number:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Site Controller DIN:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Product DIN (if different):</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>ISSUE:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">STEPS TAKEN:</div>
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for steps taken"></textarea>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">INFORMATION GATHERED:</div>
+                                <div class="form-group">
+                                    <label>Periscope:</label>
+                                    <input type="text" placeholder="Enter links">
+                                </div>
+                                <div class="form-group">
+                                    <label>Toolbox:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Photos:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>SCA link:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>RESULTS OF TROUBLESHOOTING/NEXT STEPS:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">*** Submitting to T2 ***</div>
+                                <div class="form-group">
+                                    <label>What Action are you requesting from Tier-2:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <button class="save-button" onclick="saveToSide(this)">Save to Side</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="form-section">
-            <div class="form-group">
-                <label>Site Controller DIN:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Product DIN (if different):</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
+        <!-- Right Side - Finalized Notes -->
+        <div class="notes-display">
+            <h2>Finalized Notes</h2>
+            <div id="notesContainer"></div>
+            <button class="copy-button" onclick="copyAllNotes()">Copy All Notes</button>
         </div>
-
-        <div class="form-section">
-            <div class="form-group">
-                <label>ISSUE:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="section-title">STEPS TAKEN:</div>
-            <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for steps taken"></textarea>
-        </div>
-
-        <div class="form-section">
-            <div class="section-title">INFORMATION GATHERED:</div>
-            <div class="form-group">
-                <label>Periscope:</label>
-                <input type="text" placeholder="Enter links">
-            </div>
-            <div class="form-group">
-                <label>Toolbox:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Photos:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>SCA link:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="form-group">
-                <label>RESULTS OF TROUBLESHOOTING/NEXT STEPS:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="section-title">*** Submitting to T2 ***</div>
-            <div class="form-group">
-                <label>What Action are you requesting from Tier-2:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-    </div>
-
-    <!-- Second Template -->
-    <div id="rmaTemplate" style="display: none;">
-        <div class="section-title">### INSTALLER SUPPORT RMA INFO ###</div>
-        
-        <div class="form-section">
-            <div class="form-group">
-                <label>Part being replaced:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Part DIN:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Quantity:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="form-group">
-                <label>Partner (Company):</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Warehouse Contact Name:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Warehouse Contact Phone Number and Email:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Warehouse Address:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="section-title">ORPHAN CONTACT INFO</div>
-            <div class="form-group">
-                <label>Customer name:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-            <div class="form-group">
-                <label>Address:</label>
-                <input type="text" placeholder="Enter data box">
-            </div>
-        </div>
-    </div>
-
-    <div class="print-button">
-        <button onclick="window.print()">Print Notes</button>
     </div>
 
     <script>
-        function switchTemplate() {
-            const template = document.getElementById('templateSelect').value;
-            document.getElementById('installerTemplate').style.display = template === 'installer' ? 'block' : 'none';
-            document.getElementById('rmaTemplate').style.display = template === 'rma' ? 'block' : 'none';
+        // Add new form
+        function addForm() {
+            const templateSelect = document.getElementById('templateSelect');
+            const selectedTemplate = templateSelect.value;
+            
+            const formContainer = document.getElementById('formContainer');
+            const newForm = formContainer.querySelector('.form-wrapper').cloneNode(true);
+            
+            // Reset form fields
+            newForm.querySelectorAll('input, textarea').forEach(input => {
+                input.value = '';
+                if (input.type === 'text') input.placeholder = input.placeholder.includes('Enter') ? 'Enter data box' : 'N/A';
+            });
+            
+            // Update template selection
+            newForm.querySelector('.form-title').textContent = selectedTemplate === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO';
+            newForm.querySelector('.form-fields').dataset.template = selectedTemplate;
+            
+            // Update section titles based on template
+            if (selectedTemplate === 'rma') {
+                newForm.querySelectorAll('.form-section').forEach(section => {
+                    const title = section.querySelector('.section-title');
+                    if (title) title.remove();
+                });
+                
+                newForm.querySelectorAll('.form-fields').forEach(fields => {
+                    fields.innerHTML = `
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>Part being replaced:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Part DIN:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>Partner (Company):</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Warehouse Contact Name:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Warehouse Contact Phone Number and Email:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Warehouse Address:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-title">ORPHAN CONTACT INFO</div>
+                            <div class="form-group">
+                                <label>Customer name:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Address:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                newForm.querySelectorAll('.form-fields').forEach(fields => {
+                    fields.innerHTML = `
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>Contact with:</label>
+                                <input type="text" placeholder="N/A">
+                            </div>
+                            <div class="form-group">
+                                <label>Company:</label>
+                                <input type="text" placeholder="N/A">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone number:</label>
+                                <input type="text" placeholder="N/A">
+                            </div>
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <input type="text" placeholder="N/A">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>Site Controller DIN:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Product DIN (if different):</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>ISSUE:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-title">STEPS TAKEN:</div>
+                            <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for steps taken"></textarea>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-title">INFORMATION GATHERED:</div>
+                            <div class="form-group">
+                                <label>Periscope:</label>
+                                <input type="text" placeholder="Enter links">
+                            </div>
+                            <div class="form-group">
+                                <label>Toolbox:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>Photos:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                            <div class="form-group">
+                                <label>SCA link:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>RESULTS OF TROUBLESHOOTING/NEXT STEPS:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-title">*** Submitting to T2 ***</div>
+                            <div class="form-group">
+                                <label>What Action are you requesting from Tier-2:</label>
+                                <input type="text" placeholder="Enter data box">
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            formContainer.appendChild(newForm);
+        }
+
+        // Save form to side
+        function saveToSide(button) {
+            const formWrapper = button.closest('.form-wrapper');
+            const formFields = formWrapper.querySelector('.form-fields');
+            const template = formFields.dataset.template;
+            const notesContainer = document.getElementById('notesContainer');
+            
+            // Create note element
+            const note = document.createElement('div');
+            note.className = 'note';
+            
+            // Add template title
+            note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
+            
+            // Collect and format form data
+            const inputs = formFields.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    const label = input.previousElementSibling?.textContent || '';
+                    if (label) {
+                        // Handle bullet points
+                        if (input.tagName === 'TEXTAREA') {
+                            const lines = input.value.split('\n').filter(line => line.trim());
+                            note.innerHTML += `<div class="note-field"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
+                        } else {
+                            note.innerHTML += `<div class="note-field"><strong>${label}</strong><div>${input.value}</div></div>`;
+                        }
+                    }
+                }
+            });
+            
+            notesContainer.appendChild(note);
+        }
+
+        // Copy all notes
+        function copyAllNotes() {
+            const notes = document.getElementById('notesContainer');
+            const textToCopy = Array.from(notes.querySelectorAll('.note'))
+                .map(note => {
+                    const lines = [];
+                    note.querySelectorAll('.note-field').forEach(field => {
+                        const title = field.querySelector('strong').textContent;
+                        const content = field.querySelector('ul') ? 
+                            Array.from(field.querySelectorAll('li')).map(li => `• ${li.textContent}`).join('\n') : 
+                            field.querySelector('div').textContent;
+                        
+                        lines.push(`${title}\n${content}\n`);
+                    });
+                    return lines.join('\n');
+                }).join('\n\n');
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Notes copied to clipboard!');
+            });
+        }
+
+        // Remove form
+        function removeForm(button) {
+            const formWrapper = button.closest('.form-wrapper');
+            if (document.querySelectorAll('.form-wrapper').length > 1) {
+                formWrapper.remove();
+            } else {
+                alert('Cannot remove the last form');
+            }
         }
     </script>
 </body>
