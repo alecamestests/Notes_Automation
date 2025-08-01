@@ -12,7 +12,7 @@
         <div class="form-editor">
             <div class="template-selector">
                 <label for="templateSelect">Select Template:</label>
-                <select id="templateSelect">
+                <select id="templateSelect" onchange="switchTemplate()">
                     <option value="installer">Installer Support</option>
                     <option value="rma">Installer Support RMA INFO</option>
                 </select>
@@ -59,10 +59,8 @@
                             </div>
 
                             <div class="form-section">
-                                <div class="form-group">
-                                    <label>ISSUE:</label>
-                                    <input type="text" placeholder="Enter data box">
-                                </div>
+                                <div class="section-title">ISSUE:</div>
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple issues"></textarea>
                             </div>
 
                             <div class="form-section">
@@ -74,27 +72,25 @@
                                 <div class="section-title">INFORMATION GATHERED:</div>
                                 <div class="form-group">
                                     <label>Periscope:</label>
-                                    <input type="text" placeholder="Enter links">
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Toolbox:</label>
-                                    <input type="text" placeholder="Enter data box">
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Photos:</label>
-                                    <input type="text" placeholder="Enter data box">
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>SCA link:</label>
-                                    <input type="text" placeholder="Enter data box">
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                                 </div>
                             </div>
 
                             <div class="form-section">
-                                <div class="form-group">
-                                    <label>RESULTS OF TROUBLESHOOTING/NEXT STEPS:</label>
-                                    <input type="text" placeholder="Enter data box">
-                                </div>
+                                <div class="section-title">RESULTS OF TROUBLESHOOTING/NEXT STEPS:</div>
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                             </div>
 
                             <div class="form-section">
@@ -121,6 +117,166 @@
     </div>
 
     <script>
+        function switchTemplate() {
+            const templateSelect = document.getElementById('templateSelect');
+            const selectedTemplate = templateSelect.value;
+            const formContainer = document.getElementById('formContainer');
+            
+            // Clear existing forms
+            formContainer.innerHTML = '';
+            
+            // Create new form based on template
+            const formWrapper = document.createElement('div');
+            formWrapper.className = 'form-wrapper';
+            
+            if (selectedTemplate === 'installer') {
+                formWrapper.innerHTML = `
+                    <div class="form-content">
+                        <div class="form-header">
+                            <span class="form-title">Installer Support</span>
+                            <button class="remove-form" onclick="removeForm(this)">Remove</button>
+                        </div>
+                        <div class="form-fields" data-template="installer">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Contact with:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone number:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="text" placeholder="N/A">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Site Controller DIN:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Product DIN (if different):</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">ISSUE:</div>
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple issues"></textarea>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">STEPS TAKEN:</div>
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for steps taken"></textarea>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">INFORMATION GATHERED:</div>
+                                <div class="form-group">
+                                    <label>Periscope:</label>
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Toolbox:</label>
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Photos:</label>
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>SCA link:</label>
+                                    <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">RESULTS OF TROUBLESHOOTING/NEXT STEPS:</div>
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">*** Submitting to T2 ***</div>
+                                <div class="form-group">
+                                    <label>What Action are you requesting from Tier-2:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <button class="save-button" onclick="saveToSide(this)">Save to Side</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                formWrapper.innerHTML = `
+                    <div class="form-content">
+                        <div class="form-header">
+                            <span class="form-title">Installer Support RMA INFO</span>
+                            <button class="remove-form" onclick="removeForm(this)">Remove</button>
+                        </div>
+                        <div class="form-fields" data-template="rma">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Part being replaced:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Part DIN:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Partner (Company):</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Warehouse Contact Name:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Warehouse Contact Phone Number and Email:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Warehouse Address:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">ORPHAN CONTACT INFO</div>
+                                <div class="form-group">
+                                    <label>Customer name:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                                <div class="form-group">
+                                    <label>Address:</label>
+                                    <input type="text" placeholder="Enter data box">
+                                </div>
+                            </div>
+
+                            <button class="save-button" onclick="saveToSide(this)">Save to Side</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            formContainer.appendChild(formWrapper);
+        }
+
         // Add new form
         function addForm() {
             const templateSelect = document.getElementById('templateSelect');
@@ -135,8 +291,9 @@
                 if (input.type === 'text') input.placeholder = input.placeholder.includes('Enter') ? 'Enter data box' : 'N/A';
             });
             
-            // Update template selection
-            newForm.querySelector('.form-title').textContent = selectedTemplate === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO';
+            // Update template title
+            const formTitle = newForm.querySelector('.form-title');
+            formTitle.textContent = selectedTemplate === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO';
             newForm.querySelector('.form-fields').dataset.template = selectedTemplate;
             
             // Update section titles based on template
@@ -193,6 +350,8 @@
                                 <input type="text" placeholder="Enter data box">
                             </div>
                         </div>
+
+                        <button class="save-button" onclick="saveToSide(this)">Save to Side</button>
                     `;
                 });
             } else {
@@ -229,10 +388,8 @@
                         </div>
 
                         <div class="form-section">
-                            <div class="form-group">
-                                <label>ISSUE:</label>
-                                <input type="text" placeholder="Enter data box">
-                            </div>
+                            <div class="section-title">ISSUE:</div>
+                            <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple issues"></textarea>
                         </div>
 
                         <div class="form-section">
@@ -244,27 +401,25 @@
                             <div class="section-title">INFORMATION GATHERED:</div>
                             <div class="form-group">
                                 <label>Periscope:</label>
-                                <input type="text" placeholder="Enter links">
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Toolbox:</label>
-                                <input type="text" placeholder="Enter data box">
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Photos:</label>
-                                <input type="text" placeholder="Enter data box">
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>SCA link:</label>
-                                <input type="text" placeholder="Enter data box">
+                                <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                             </div>
                         </div>
 
                         <div class="form-section">
-                            <div class="form-group">
-                                <label>RESULTS OF TROUBLESHOOTING/NEXT STEPS:</label>
-                                <input type="text" placeholder="Enter data box">
-                            </div>
+                            <div class="section-title">RESULTS OF TROUBLESHOOTING/NEXT STEPS:</div>
+                            <textarea placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
                         </div>
 
                         <div class="form-section">
@@ -274,10 +429,12 @@
                                 <input type="text" placeholder="Enter data box">
                             </div>
                         </div>
+
+                        <button class="save-button" onclick="saveToSide(this)">Save to Side</button>
                     `;
                 });
             }
-
+            
             formContainer.appendChild(newForm);
         }
 
@@ -296,17 +453,19 @@
             note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
             
             // Collect and format form data
-            const inputs = formFields.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
+            const elements = formFields.querySelectorAll('input, textarea');
+            elements.forEach(element => {
                 if (input.value.trim() !== '') {
-                    const label = input.previousElementSibling?.textContent || '';
+                    const label = element.previousElementSibling?.textContent || '';
                     if (label) {
                         // Handle bullet points
-                        if (input.tagName === 'TEXTAREA') {
-                            const lines = input.value.split('\n').filter(line => line.trim());
-                            note.innerHTML += `<div class="note-field"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
+                        if (element.tagName === 'TEXTAREA') {
+                            const lines = element.value.split('\n').filter(line => line.trim());
+                            if (lines.length > 0) {
+                                note.innerHTML += `<div class="note-field"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
+                            }
                         } else {
-                            note.innerHTML += `<div class="note-field"><strong>${label}</strong><div>${input.value}</div></div>`;
+                            note.innerHTML += `<div class="note-field"><strong>${label}</strong><div>${element.value}</div></div>`;
                         }
                     }
                 }

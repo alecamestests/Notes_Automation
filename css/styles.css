@@ -87,6 +87,7 @@ nav {
 
 /* Base styles */
 /* Layout */
+/* Layout */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -225,5 +226,9 @@ body {
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
+    }
+    .save-button {
+        float: none;
+        width: 100%;
     }
 }
