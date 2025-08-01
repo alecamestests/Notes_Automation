@@ -440,6 +440,7 @@
 
         
         // Save form to side
+        // Save form to side
         function saveToSide(button) {
             const formWrapper = button.closest('.form-wrapper');
             const formFields = formWrapper.querySelector('.form-fields');
@@ -456,7 +457,7 @@
             // Collect and format form data
             const elements = formFields.querySelectorAll('input, textarea');
             elements.forEach(element => {
-                if (element.value.trim() !== '') {  // Fixed: Changed 'input' to 'element'
+                if (element.value.trim() !== '') {  // Fixed: Using 'element' instead of 'input'
                     const label = element.previousElementSibling?.textContent || '';
                     if (label) {
                         // Handle bullet points
