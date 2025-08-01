@@ -479,6 +479,9 @@
 
         // Copy all notes
         function copyAllNotes() {
+            // Add template title
+            note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
+            
             const notes = document.getElementById('notesContainer');
             const textToCopy = Array.from(notes.querySelectorAll('.note'))
                 .map(note => {
