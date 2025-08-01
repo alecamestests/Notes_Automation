@@ -166,10 +166,10 @@ body {
 }
 
 /* Notes Display */
-.notes-display {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* Notes Display */
+.note-field {
+    margin: 15px 0;
+    page-break-inside: avoid; /* Prevent page breaks in printed notes */
 }
 
 .note {

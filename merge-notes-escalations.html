@@ -438,6 +438,7 @@
             formContainer.appendChild(newForm);
         }
 
+        
         // Save form to side
         function saveToSide(button) {
             const formWrapper = button.closest('.form-wrapper');
@@ -455,7 +456,7 @@
             // Collect and format form data
             const elements = formFields.querySelectorAll('input, textarea');
             elements.forEach(element => {
-                if (input.value.trim() !== '') {
+                if (element.value.trim() !== '') {  // Fixed: Changed 'input' to 'element'
                     const label = element.previousElementSibling?.textContent || '';
                     if (label) {
                         // Handle bullet points
@@ -474,6 +475,7 @@
             notesContainer.appendChild(note);
         }
 
+        
         // Copy all notes
         function copyAllNotes() {
             const notes = document.getElementById('notesContainer');
