@@ -456,17 +456,19 @@
             // Collect and format form data
             const elements = formFields.querySelectorAll('input, textarea');
             elements.forEach(element => {
-                if (element.value.trim() !== '') {  // Fixed: Using 'element' instead of 'input'
+                if (element.value.trim() !== '') {
                     const label = element.previousElementSibling?.textContent || '';
                     if (label) {
-                        // Handle bullet points
+                        // Store original format in data attribute
                         if (element.tagName === 'TEXTAREA') {
                             const lines = element.value.split('\n').filter(line => line.trim());
                             if (lines.length > 0) {
-                                note.innerHTML += `<div class="note-field"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
+                                // Store original format for copying
+                                const originalFormat = element.value;
+                                note.innerHTML += `<div class="note-field" data-original="${originalFormat}"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
                             }
                         } else {
-                            note.innerHTML += `<div class="note-field"><strong>${label}</strong><div>${element.value}</div></div>`;
+                            note.innerHTML += `<div class="note-field" data-original="${element.value}"><strong>${label}</strong><div>${element.value}</div></div>`;
                         }
                     }
                 }
@@ -475,7 +477,6 @@
             notesContainer.appendChild(note);
         }
 
-        
         // Copy all notes
         function copyAllNotes() {
             const notes = document.getElementById('notesContainer');
@@ -484,11 +485,19 @@
                     const lines = [];
                     note.querySelectorAll('.note-field').forEach(field => {
                         const title = field.querySelector('strong').textContent;
-                        const content = field.querySelector('ul') ? 
-                            Array.from(field.querySelectorAll('li')).map(li => `• ${li.textContent}`).join('\n') : 
-                            field.querySelector('div').textContent;
+                        const originalContent = field.getAttribute('data-original') || '';
                         
-                        lines.push(`${title}\n${content}\n`);
+                        if (originalContent) {
+                            // Use original format for copying
+                            lines.push(`${title}\n${originalContent}\n`);
+                        } else if (field.querySelector('ul')) {
+                            // Handle bullet points
+                            const bulletLines = Array.from(field.querySelectorAll('li')).map(li => `• ${li.textContent}`).join('\n');
+                            lines.push(`${title}\n${bulletLines}\n`);
+                        } else {
+                            // Handle regular text
+                            lines.push(`${title}\n${field.querySelector('div').textContent}\n`);
+                        }
                     });
                     return lines.join('\n');
                 }).join('\n\n');
