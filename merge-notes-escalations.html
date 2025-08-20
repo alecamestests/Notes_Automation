@@ -439,73 +439,76 @@
         }
 
         
-        // Save form to side
-        function saveToSide(button) {
-            const formWrapper = button.closest('.form-wrapper');
-            const formFields = formWrapper.querySelector('.form-fields');
-            const template = formFields.dataset.template;
-            const notesContainer = document.getElementById('notesContainer');
-            
-            // Create note element
-            const note = document.createElement('div');
-            note.className = 'note';
-            
-            // Add template title
-            note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
-            
-            // Collect and format form data
-            const elements = formFields.querySelectorAll('input, textarea');
-            elements.forEach(element => {
-                if (element.value.trim() !== '') {
-                    const label = element.previousElementSibling?.textContent || '';
-                    if (label) {
-                        // Store original format in data attribute
-                        if (element.tagName === 'TEXTAREA') {
-                            const lines = element.value.split('\n').filter(line => line.trim());
-                            if (lines.length > 0) {
-                                // Store original format for copying
-                                const originalFormat = element.value;
-                                note.innerHTML += `<div class="note-field" data-original="${originalFormat}"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
-                            }
-                        } else {
-                            note.innerHTML += `<div class="note-field" data-original="${element.value}"><strong>${label}</strong><div>${element.value}</div></div>`;
-                        }
+       // Save form to side
+function saveToSide(button) {
+    const formWrapper = button.closest('.form-wrapper');
+    const formFields = formWrapper.querySelector('.form-fields');
+    const template = formFields.dataset.template;
+    const notesContainer = document.getElementById('notesContainer');
+    
+    // Create note element
+    const note = document.createElement('div');
+    note.className = 'note';
+    
+    // Add template title
+    note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
+    
+    // Collect and format form data
+    const elements = formFields.querySelectorAll('input, textarea');
+    elements.forEach(element => {
+        if (element.value.trim() !== '') {
+            const label = element.previousElementSibling?.textContent || '';
+            if (label) {
+                if (element.tagName === 'TEXTAREA') {
+                    const lines = element.value.split('\n').filter(line => line.trim());
+                    if (lines.length > 0) {
+                        // Store HTML version for clipboard
+                        const htmlContent = `<ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul>`;
+                        note.innerHTML += `<div class="note-field" data-html="${htmlContent}"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
                     }
+                } else {
+                    note.innerHTML += `<div class="note-field" data-html="<div>${element.value}</div>"><strong>${label}</strong><div>${element.value}</div></div>`;
+                }
+            }
+        }
+    });
+    
+    // Add new note to top
+    notesContainer.insertBefore(note, notesContainer.firstChild);
+}
+
+// Copy all notes
+function copyAllNotes() {
+    const notes = document.getElementById('notesContainer');
+    const htmlContent = Array.from(notes.querySelectorAll('.note'))
+        .map(note => {
+            const sections = [];
+            note.querySelectorAll('.note-field').forEach(field => {
+                const title = field.querySelector('strong').textContent;
+                const html = field.getAttribute('data-html') || '';
+                if (html) {
+                    sections.push(`<div><strong>${title}</strong>${html}</div>`);
                 }
             });
-            
-            // Add new note to top of container
-            notesContainer.insertBefore(note, notesContainer.firstChild);
-        }
-
-        // Copy all notes
-        function copyAllNotes() {
-            const notes = document.getElementById('notesContainer');
-            const textToCopy = Array.from(notes.querySelectorAll('.note'))
-                .map(note => {
-                    const lines = [];
-                    note.querySelectorAll('.note-field').forEach(field => {
-                        const title = field.querySelector('strong').textContent;
-                        const originalContent = field.getAttribute('data-original') || '';
-                        
-                        if (originalContent) {
-                            // Use original format for copying
-                            lines.push(`${title}\n${originalContent}\n`);
-                        } else if (field.querySelector('ul')) {
-                            // Handle bullet points
-                            const bulletLines = Array.from(field.querySelectorAll('li')).map(li => `• ${li.textContent}`).join('\n');
-                            lines.push(`${title}\n${bulletLines}\n`);
-                        } else {
-                            // Handle regular text
-                            lines.push(`${title}\n${field.querySelector('div').textContent}\n`);
-                        }
-                    });
-                    return lines.join('\n');
-                }).join('\n\n');
-            
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                alert('Notes copied to clipboard!');
-            });
+            return sections.join('');
+        }).join('<hr>'); // Optional separator between notes
+    
+    // Create a temporary div to hold HTML content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    
+    // Use Range API to copy HTML content
+    const range = document.createRange();
+    range.selectNodeContents(tempDiv);
+    
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    
+    document.execCommand('copy');
+    selection.removeAllRanges();
+    
+    alert('Notes copied to clipboard!');
 }
 
         // Remove form
