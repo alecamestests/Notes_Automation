@@ -446,64 +446,70 @@
         }
 
         
-       // Save form to side
-function saveToSide(button) {
-    const formWrapper = button.closest('.form-wrapper');
-    const formFields = formWrapper.querySelector('.form-fields');
-    const template = formFields.dataset.template;
-    const notesContainer = document.getElementById('notesContainer');
-    
+    // Save form to side
+    function saveToSide(button) {
+        const formWrapper = button.closest('.form-wrapper');
+        const formFields = formWrapper.querySelector('.form-fields');
+        const template = formFields.dataset.template;
+        const notesContainer = document.getElementById('notesContainer');
+        
     // Create note element
-    const note = document.createElement('div');
-    note.className = 'note';
-    
+        const note = document.createElement('div');
+        note.className = 'note';
+        
     // Add template title
-    note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
-    
+        note.innerHTML = `<div class="note-title">### ${template === 'installer' ? 'Installer Support' : 'Installer Support RMA INFO'} ###</div>`;
+        
     // Collect and format form data
-    const elements = formFields.querySelectorAll('input, textarea');
-    elements.forEach(element => {
-        if (element.value.trim() !== '') {
-            const label = element.previousElementSibling?.textContent || '';
-            if (label) {
-                if (element.tagName === 'TEXTAREA') {
-                    const lines = element.value.split('\n').filter(line => line.trim());
-                    if (lines.length > 0) {
-                        // Store HTML version for clipboard
-                        const htmlContent = `<ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul>`;
-                        note.innerHTML += `<div class="note-field" data-html="${htmlContent}"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
+        const elements = formFields.querySelectorAll('input, textarea');
+        elements.forEach(element => {
+            if (element.value.trim() !== '') {
+                const label = element.previousElementSibling?.textContent || '';
+                if (label) {
+                    if (element.tagName === 'TEXTAREA') {
+                        const lines = element.value.split('\n').filter(line => line.trim());
+                        if (lines.length > 0) {
+                        // Store HTML version with ordered list for clipboard
+                            const htmlContent = `<ol>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ol>`;
+                            
+                        // Store original format for plain text fallback
+                            const originalFormat = element.value;
+                            
+                        // Create note field with bullet points for display
+                            note.innerHTML += `<div class="note-field" data-html="${htmlContent}" data-original="${originalFormat}"><strong>${label}</strong><ul>${lines.map(line => `<li>${line.replace(/^\d+\)\s*/, '')}</li>`).join('')}</ul></div>`;
+                        }
+                    } else {
+                        // Store regular text fields
+                        note.innerHTML += `<div class="note-field" data-html="<div>${element.value}</div>" data-original="${element.value}"><strong>${label}</strong><div>${element.value}</div></div>`;
                     }
-                } else {
-                    note.innerHTML += `<div class="note-field" data-html="<div>${element.value}</div>"><strong>${label}</strong><div>${element.value}</div></div>`;
                 }
             }
-        }
-    });
-    
-    // Add new note to top
-    notesContainer.insertBefore(note, notesContainer.firstChild);
-}
+        });
+        
+        // Add new note to top of container
+        notesContainer.insertBefore(note, notesContainer.firstChild);
+    }
 
-// Copy all notes
-function copyAllNotes() {
-    const notes = document.getElementById('notesContainer');
-    const htmlContent = Array.from(notes.querySelectorAll('.note'))
-        .map(note => {
-            const sections = [];
-            note.querySelectorAll('.note-field').forEach(field => {
-                const title = field.querySelector('strong').textContent;
-                const html = field.getAttribute('data-html') || '';
-                if (html) {
-                    sections.push(`<div><strong>${title}</strong>${html}</div>`);
-                }
-            });
-            return sections.join('');
-        }).join('<hr>'); // Optional separator between notes
-    
-    // Create a temporary div to hold HTML content
+    // Copy all notes
+    function copyAllNotes() {
+        const notes = document.getElementById('notesContainer');
+        const htmlContent = Array.from(notes.querySelectorAll('.note'))
+            .map(note => {
+                const sections = [];
+                note.querySelectorAll('.note-field').forEach(field => {
+                    const title = field.querySelector('strong').textContent;
+                    const html = field.getAttribute('data-html') || '';
+                    if (html) {
+                        sections.push(`<div><strong>${title}</strong>${html}</div>`);
+                    }
+                });
+                return sections.join('');
+            }).join('<hr>'); // Optional separator between notes
+        
+    // Create temporary div to hold HTML content
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
-    
+        
     // Use Range API to copy HTML content
     const range = document.createRange();
     range.selectNodeContents(tempDiv);
@@ -516,17 +522,8 @@ function copyAllNotes() {
     selection.removeAllRanges();
     
     alert('Notes copied to clipboard!');
-}
+    }
 
-        // Remove form
-        function removeForm(button) {
-            const formWrapper = button.closest('.form-wrapper');
-            if (document.querySelectorAll('.form-wrapper').length > 1) {
-                formWrapper.remove();
-            } else {
-                alert('Cannot remove the last form');
-            }
-        }
     </script>
 </body>
 </html>
