@@ -1,0 +1,153 @@
+<!-- templates/form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Installer Support Form</title>
+    <style>
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .form-editor {
+            flex: 1;
+            max-width: 500px;
+        }
+        
+        .notes-display {
+            flex: 2;
+            border-left: 1px solid #ccc;
+            padding-left: 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .note-section {
+            margin-bottom: 30px;
+        }
+        
+        .spacer {
+            height: 45px;
+        }
+        
+        ul, ol {
+            list-style-position: inside;
+            padding-left: 20px;
+        }
+        
+        .note-field {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Entry (Left Side) -->
+        <div class="form-editor">
+            <form method="POST">
+                <div class="form-section">
+                    <h3>Contact with</h3>
+                    <label>Contact with:</label>
+                    <input type="text" name="contact_with" placeholder="N/A">
+                </div>
+                
+                <div class="form-section">
+                    <label>Company:</label>
+                    <input type="text" name="company" placeholder="N/A">
+                </div>
+                
+                <div class="form-section">
+                    <label>Phone number:</label>
+                    <input type="text" name="phone" placeholder="N/A">
+                </div>
+                
+                <div class="form-section">
+                    <label>Email:</label>
+                    <input type="text" name="email" placeholder="N/A">
+                </div>
+                
+                <div class="form-section">
+                    <h3>Site Controller DIN</h3>
+                    <label>Site Controller DIN:</label>
+                    <input type="text" name="din" placeholder="Enter data box">
+                </div>
+                
+                <div class="form-section">
+                    <label>Product DIN (if different):</label>
+                    <input type="text" name="product_din" placeholder="Enter data box">
+                </div>
+                
+                <div class="form-section">
+                    <h3>Steps Taken (one per line)</h3>
+                    <textarea name="steps" placeholder="1) Enter steps here&#10;2) Use this format for steps taken"></textarea>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Information Gathered</h3>
+                    <label>Periscope:</label>
+                    <input type="text" name="periscope" placeholder="N/A">
+                    
+                    <label>Toolbox:</label>
+                    <input type="text" name="toolbox" placeholder="N/A">
+                    
+                    <label>Photos:</label>
+                    <input type="text" name="photos" placeholder="N/A">
+                    
+                    <label>SCA link:</label>
+                    <input type="text" name="sca_link" placeholder="N/A">
+                    
+                    <label>TCC Link:</label>
+                    <input type="text" name="tcc_link" placeholder="N/A">
+                </div>
+                
+                <div class="form-section">
+                    <h3>Results of Troubleshooting (one per line)</h3>
+                    <textarea name="results" placeholder="1) Enter bullet points here&#10;2) Use this format for multiple entries"></textarea>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Submitting to T2</h3>
+                    <label>What Action are you requesting from Tier-2:</label>
+                    <input type="text" name="t2_request" placeholder="Enter data box">
+                </div>
+                
+                <button type="submit">Save Form</button>
+            </form>
+        </div>
+        
+        <!-- Finalized Notes (Right Side) -->
+        <div class="notes-display">
+            <h2>Finalized Notes</h2>
+            <div id="notesContainer">
+                {% for form_data in saved_forms %}
+                    <div class="note">
+                        {{ format_form_data(form_data)|safe }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="copy-button" onclick="copyAllNotes()">Copy All Notes</button>
+        </div>
+    </div>
+    
+    <script>
+        function copyAllNotes() {
+            const notes = document.getElementById('notesContainer');
+            const htmlContent = notes.innerHTML;
+            
+            // Create temporary div to hold HTML content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlContent;
+            
+            // Extract text content for clipboard
+            const textToCopy = tempDiv.textContent || tempDiv.innerText;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Notes copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
